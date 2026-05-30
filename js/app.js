@@ -7,6 +7,7 @@ let searchQuery = "";
 
 // DOM Elements
 const searchInput = document.getElementById("search-input");
+const searchSubmitBtn = document.getElementById("search-submit");
 const categoriesWrapper = document.getElementById("discover-filters-row");
 const heroFiltersWrapper = document.getElementById("hero-filters-row");
 const discoverGrid = document.getElementById("discover-grid");
@@ -294,7 +295,9 @@ function renderDiscoverGrid() {
     return query === "" ? true : (
       p.name.toLowerCase().includes(query) ||
       p.tagline.toLowerCase().includes(query) ||
-      p.badges.join(" ").toLowerCase().includes(query)
+      (p.description && p.description.toLowerCase().includes(query)) ||
+      p.badges.join(" ").toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query)
     );
   });
 
@@ -599,10 +602,26 @@ window.selectCategory = function(category) {
   document.getElementById("discover").scrollIntoView({ behavior: "smooth" });
 };
 
-// Search listeners
-searchInput.addEventListener("input", (e) => {
-  searchQuery = e.target.value;
+// Search submission handler
+function submitSearch() {
+  searchQuery = searchInput.value;
   renderDiscoverGrid();
+  const discoverSection = document.getElementById("discover");
+  if (discoverSection) {
+    discoverSection.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+// Bind search submission
+if (searchSubmitBtn) {
+  searchSubmitBtn.addEventListener("click", submitSearch);
+}
+
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    submitSearch();
+  }
 });
 
 // ESC modal close
