@@ -1,0 +1,193 @@
+/* 💎 The Fastest App - Replicated Design System Tokens */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.10 0.018 270);
+  --foreground: oklch(0.97 0.005 280);
+  --card: oklch(0.14 0.022 270);
+  --card-foreground: oklch(0.97 0.005 280);
+  --popover: oklch(0.12 0.02 270);
+  --popover-foreground: oklch(0.97 0.005 280);
+  --primary: oklch(0.72 0.20 310);
+  --primary-foreground: oklch(0.10 0.018 270);
+  --secondary: oklch(0.20 0.03 270);
+  --secondary-foreground: oklch(0.97 0.005 280);
+  --muted: oklch(0.18 0.025 270);
+  --muted-foreground: oklch(0.68 0.025 270);
+  --accent: oklch(0.70 0.18 220);
+  --accent-foreground: oklch(0.10 0.018 270);
+  --destructive: oklch(0.62 0.24 25);
+  --destructive-foreground: oklch(0.97 0.005 280);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.72 0.20 310);
+
+  --gold: oklch(0.85 0.16 88);
+  --silver: oklch(0.88 0.02 250);
+  --bronze: oklch(0.70 0.13 55);
+
+  --aurora-1: oklch(0.65 0.25 310);
+  --aurora-2: oklch(0.70 0.22 220);
+  --aurora-3: oklch(0.72 0.22 180);
+
+  --gradient-hero: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklab, var(--aurora-1) 35%, transparent), transparent 60%),
+                   radial-gradient(ellipse 60% 50% at 80% 30%, color-mix(in oklab, var(--aurora-2) 30%, transparent), transparent 60%),
+                   radial-gradient(ellipse 60% 50% at 20% 40%, color-mix(in oklab, var(--aurora-3) 25%, transparent), transparent 60%);
+
+  --gradient-primary: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
+  --gradient-gold: linear-gradient(135deg, oklch(0.92 0.14 95), oklch(0.72 0.16 60));
+  --gradient-silver: linear-gradient(135deg, oklch(0.95 0.01 260), oklch(0.72 0.02 250));
+  --gradient-bronze: linear-gradient(135deg, oklch(0.80 0.13 60), oklch(0.55 0.12 45));
+
+  --shadow-glow: 0 0 60px -10px color-mix(in oklab, var(--aurora-1) 50%, transparent);
+  --shadow-elegant: 0 30px 80px -30px color-mix(in oklab, var(--aurora-1) 35%, transparent);
+  --shadow-card: 0 20px 60px -25px oklch(0 0 0 / 0.6);
+}
+
+/* 🌀 General Resets */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+h1, h2, h3, h4 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-display {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+/* 🎨 atmospheric Typography & Styling classes */
+.gradient-text {
+  background: linear-gradient(135deg, oklch(0.98 0.02 280), oklch(0.80 0.18 310) 50%, oklch(0.78 0.18 220));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gold-text {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 🧪 Frosted Glass Classes */
+.glass {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--card) 70%, transparent), color-mix(in oklab, var(--card) 40%, transparent));
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--border);
+}
+
+.glass-strong {
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--border);
+}
+
+/* 🎨 Border gradient outlines */
+.border-gradient {
+  position: relative;
+}
+.border-gradient::before {
+  content: "";
+  position: absolute; inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--aurora-1) 60%, transparent), transparent 40%, color-mix(in oklab, var(--aurora-2) 50%, transparent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 🎭 GPU keyframes animations */
+@keyframes float {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(0,-24px,0); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes aurora {
+  0%, 100% { transform: translate3d(-50%,0,0) rotate(0deg); }
+  50% { transform: translate3d(-46%,-3%,0) rotate(8deg); }
+}
+
+.animate-aurora {
+  animation: aurora 22s ease infinite;
+}
+
+@keyframes glowPulse {
+  0%,100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-rise {
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out both;
+}
+
+/* 📈 Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
