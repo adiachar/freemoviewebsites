@@ -367,11 +367,16 @@ function renderFAQ() {
   const wrapper = document.getElementById("faq-accordions-wrapper");
   if (!wrapper) return;
   const items = [
-    { q: "What is Streamatlas?", a: "A handcrafted directory of the best streaming destinations on the internet — ranked, reviewed and continuously updated." },
-    { q: "How are platforms ranked?", a: "Each platform is scored across three dimensions: video quality, ad cleanliness and playback performance, then weighted to produce a final ranking." },
-    { q: "Do you host any content?", a: "No. Streamatlas is a directory — every link opens the platform's official website in a new tab. We never host or stream content ourselves." },
+    { q: "What is FreeMovieWebsites?", a: "A handcrafted directory of the best free movie websites on the internet — handpicked, ranked, reviewed, and continuously updated." },
+    { q: "How are platforms ranked?", a: "Each platform is scored across three dimensions: video quality, ad cleanliness, and playback performance, then weighted to produce a final ranking." },
+    { q: "Do you host any content?", a: "No. FreeMovieWebsites is a directory — every link opens the platform's official website in a new tab. We never host or stream any content ourselves." },
     { q: "How often are listings refreshed?", a: "We re-verify the top 50 platforms weekly and the long tail monthly. New entries are reviewed before being added." },
-    { q: "Is it free?", a: "Streamatlas is completely free to use. There is no signup, no paywall and no tracking beyond essential analytics." }
+    { q: "Is it free?", a: "FreeMovieWebsites is completely free to use. There is no signup, no paywall, and no tracking beyond essential analytics." },
+    { q: "Are free movie streaming websites safe to use in 2026?", a: "Safety varies by platform. Some sites like Plex operate legally with proper licensing and minimal security risks. However, many free streaming sites contain aggressive ads, pop-ups, and potential security concerns. Using a robust ad blocker, antivirus software, and avoiding sites that request personal information can help protect your device and privacy." },
+    { q: "Do I need to create an account to watch movies on these free streaming sites?", a: "Most platforms don't require registration or account creation. Sites like LunaStream, NetPrime, HDToday, and MyFlixer offer instant access without asking for personal details or login credentials. This no-registration approach makes it easier to start streaming immediately." },
+    { q: "Can I watch free movies on my mobile device or smart TV?", a: "Yes, nearly all these platforms support mobile viewing through responsive web browsers on iOS and Android devices. Some services like CoreFlix offer dedicated mobile apps, while others like RidoMovies and Soap2Day provide Chromecast support for streaming to smart TVs." },
+    { q: "Why do free streaming sites have so many ads and pop-ups?", a: "Advertisements are how free streaming platforms generate revenue to cover operating costs and content hosting. While some sites like NetPrime are ad-free, most free services display ads, pop-ups, or redirects. Using browser extensions like uBlock Origin or Brave browser can significantly reduce interruptions." },
+    { q: "What streaming quality can I expect from free movie websites?", a: "Quality varies by platform and specific titles. Many sites offer multiple resolutions from 480p to 1080p HD, with some like MyFlixer and HDToday providing 4K content on select titles. Actual quality depends on your internet speed and the platform's server performance." }
   ];
 
   wrapper.innerHTML = items.map((it, i) => `
@@ -398,17 +403,16 @@ window.toggleFAQ = function(index) {
   const icon = document.getElementById(`faq-icon-${index}`);
   const isExpanded = btn.getAttribute("aria-expanded") === "true";
   
-  // Close all others
-  for (let i = 0; i < 5; i++) {
-    const otherContent = document.getElementById(`faq-content-${i}`);
-    const otherBtn = document.getElementById(`faq-btn-${i}`);
-    const otherIcon = document.getElementById(`faq-icon-${i}`);
-    if (otherContent && i !== index) {
-      otherContent.style.gridTemplateRows = "0fr";
-      otherBtn.setAttribute("aria-expanded", "false");
-      otherIcon.classList.remove("rotate-45", "text-foreground");
+  const allFAQs = document.querySelectorAll("[id^='faq-content-']");
+  allFAQs.forEach((el, i) => {
+    if (i !== index) {
+      el.style.gridTemplateRows = "0fr";
+      const ob = document.getElementById(`faq-btn-${i}`);
+      const oi = document.getElementById(`faq-icon-${i}`);
+      if (ob) ob.setAttribute("aria-expanded", "false");
+      if (oi) oi.classList.remove("rotate-45", "text-foreground");
     }
-  }
+  });
 
   if (isExpanded) {
     content.style.gridTemplateRows = "0fr";
@@ -420,6 +424,34 @@ window.toggleFAQ = function(index) {
     icon.classList.add("rotate-45", "text-foreground");
   }
 };
+
+// 📊 Render SEO Comparison Table (top 17 detailed platforms)
+function renderComparisonTable() {
+  const tbody = document.getElementById("comparison-table-body");
+  if (!tbody) return;
+  const detailed = PLATFORMS.filter(p => p.features);
+  tbody.innerHTML = detailed.map(p => {
+    const trustNum = parseInt(p.trustScore) || 50;
+    const trustClass = trustNum >= 80 ? "text-emerald-400" : trustNum >= 60 ? "text-amber-400" : "text-rose-400";
+    let adBadge = "";
+    if (p.ads >= 90) adBadge = `<span class="inline-flex items-center gap-1 text-emerald-400 font-medium">${ICONS.shieldCheck} \u{1F60A} Excellent</span>`;
+    else if (p.ads >= 80) adBadge = `<span class="inline-flex items-center gap-1 text-amber-400 font-medium">${ICONS.zap} \u{1F610} Moderate</span>`;
+    else adBadge = `<span class="inline-flex items-center gap-1 text-rose-400 font-medium">${ICONS.alert} \u26A0\uFE0F Heavy Ads</span>`;
+    return `
+      <tr class="hover:bg-foreground/5 transition-colors">
+        <td class="p-4 sm:p-5"><div class="flex items-center gap-3">${renderLogoHTML(p.name, 32)}<span class="font-display font-semibold text-white">${p.name}</span></div></td>
+        <td class="p-4 sm:p-5 text-foreground/80">${p.regRequired || "No"}</td>
+        <td class="p-4 sm:p-5 text-foreground/80 font-medium">${p.qualityText || "HD"}</td>
+        <td class="p-4 sm:p-5">${adBadge}</td>
+        <td class="p-4 sm:p-5 font-mono font-bold ${trustClass}">${p.trustScore || "N/A"}</td>
+        <td class="p-4 sm:p-5 text-right"><div class="inline-flex gap-2">
+          <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="inline-flex h-8 items-center gap-1 rounded-lg bg-foreground/5 border border-border px-3 text-xs font-semibold hover:bg-foreground/10 transition-colors">Visit ${ICONS.arrowUpRight}</a>
+          <button onclick="window.launchPreview('${p.id}')" class="inline-flex h-8 items-center gap-1 rounded-lg bg-purple-500/10 border border-purple-500/20 px-3 text-xs font-semibold text-purple-300 hover:bg-purple-500/20 transition-colors">${ICONS.eye} Review</button>
+        </div></td>
+      </tr>`;
+  }).join("");
+}
+
 
 // 🕹️ Preview modal injector matching React exactly
 window.launchPreview = function(platformId) {
@@ -585,6 +617,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHeroFilters();
   renderFeaturedSection();
   renderLeaderboard();
+  renderComparisonTable();
   renderDiscoverFilters();
   renderDiscoverGrid();
   renderShelves();
