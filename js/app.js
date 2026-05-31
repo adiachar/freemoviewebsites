@@ -42,7 +42,7 @@ const revealObserver = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.08, rootMargin: "0px 0px -20px 0px" }
+  { threshold: 0.01, rootMargin: "0px 0px -20px 0px" }
 );
 
 function initRevealObserver() {
@@ -357,7 +357,7 @@ function renderShelves() {
               <h3 class="mt-2 font-display text-2xl sm:text-3xl font-bold tracking-tight">${s.title}</h3>
             </div>
           </header>
-          <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal">
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal">
             ${cardsHTML}
           </div>
         </div>
