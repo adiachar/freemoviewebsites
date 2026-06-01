@@ -428,7 +428,7 @@ window.toggleFAQ = function(index) {
   }
 };
 
-// 📊 Render SEO Comparison Table (top 17 detailed platforms)
+// 📊 Render SEO Comparison Table (detailed platforms)
 function renderComparisonTable() {
   const tbody = document.getElementById("comparison-table-body");
   if (!tbody) return;
