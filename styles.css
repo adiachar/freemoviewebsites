@@ -204,3 +204,9 @@ body.modal-open #app-content-wrapper {
   opacity: 0.15;
   pointer-events: none;
 }
+
+/* ⚡ Hardware-accelerated offscreen browser layout optimization */
+#comparison, #insights, #faq {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
+}

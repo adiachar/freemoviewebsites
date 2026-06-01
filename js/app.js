@@ -236,10 +236,10 @@ function createCardHTML(p, rank) {
            style="background: var(--gradient-primary); box-shadow: var(--shadow-glow);">
           Visit ${ICONS.arrowUpRight}
         </a>
-        <button onclick="window.launchPreview('${p.id}')"
-                class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-foreground/5 px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-foreground/10">
-          ${ICONS.eye} Preview
-        </button>
+         <button onclick="window.launchPreview('${p.id}')" onmouseenter="window.prefetchImage('${p.id}')"
+                 class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-foreground/5 px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-foreground/10">
+           ${ICONS.eye} Preview
+         </button>
       </div>
     </article>
   `;
@@ -399,12 +399,29 @@ function renderComparisonTable() {
         <td class="p-4 sm:p-5">${adBadge}</td>
         <td class="p-4 sm:p-5 text-right"><div class="inline-flex gap-2">
           <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="inline-flex h-8 items-center gap-1 rounded-lg bg-foreground/5 border border-border px-3 text-xs font-semibold hover:bg-foreground/10 transition-colors">Visit ${ICONS.arrowUpRight}</a>
-          <button onclick="window.launchPreview('${p.id}')" class="inline-flex h-8 items-center gap-1 rounded-lg bg-purple-500/10 border border-purple-500/20 px-3 text-xs font-semibold text-purple-300 hover:bg-purple-500/20 transition-colors">${ICONS.eye} Review</button>
+          <button onclick="window.launchPreview('${p.id}')" onmouseenter="window.prefetchImage('${p.id}')" class="inline-flex h-8 items-center gap-1 rounded-lg bg-purple-500/10 border border-purple-500/20 px-3 text-xs font-semibold text-purple-300 hover:bg-purple-500/20 transition-colors">${ICONS.eye} Review</button>
         </div></td>
       </tr>`;
   }).join("");
 }
 
+
+// ⚡ High-performance image prefetcher on hover
+const prefetchedImages = new Set();
+window.prefetchImage = function(platformId) {
+  const screenshots = {
+    netprime: "/movie_website_images/Netprime.webp",
+    lunastream: "/movie_website_images/LunaStream.webp",
+    coreflix: "/movie_website_images/coreflix.webp",
+    nightflix: "/movie_website_images/nightflix.webp"
+  };
+  const url = screenshots[platformId];
+  if (url && !prefetchedImages.has(url)) {
+    prefetchedImages.add(url);
+    const img = new Image();
+    img.src = url;
+  }
+};
 
 // 🕹️ Preview modal injector matching React exactly
 window.launchPreview = function(platformId) {
@@ -432,33 +449,34 @@ window.launchPreview = function(platformId) {
       <div class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-slate-950/95 border border-white/10 p-6 sm:p-10 animate-scale-in"
            style="box-shadow: 0 30px 100px -20px oklch(0 0 0 / 0.8);">
            
+        <button onclick="window.closePreview()"
+                class="absolute right-4 top-4 sm:right-6 sm:top-6 grid h-8 w-8 place-items-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-white cursor-pointer z-20"
+                aria-label="Close">
+          ${ICONS.close}
+        </button>
+           
         <!-- Sleek Minimalist Header -->
-        <div class="flex items-start justify-between gap-6 pb-6 border-b border-white/10 relative">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10 relative pr-10 sm:pr-14">
           <div class="flex items-center gap-4">
-            ${renderLogoHTML(p.name, 64)}
+            ${renderLogoHTML(p.name, 56)}
             <div>
-              <div class="flex items-center gap-2">
-                <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">${p.name}</h2>
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-white leading-none">${p.name}</h2>
                 ${p.premium ? `
-                  <span class="inline-flex items-center gap-1 rounded-full bg-purple-500/10 border border-purple-500/20 px-2.5 py-0.5 text-xs font-semibold gold-text">
+                  <span class="inline-flex items-center gap-1 rounded-full bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 text-[10px] font-semibold gold-text">
                     ${ICONS.star} Premium
                   </span>
                 ` : ""}
               </div>
-              <p class="text-sm text-muted-foreground mt-0.5">${p.tagline}</p>
+              <p class="text-xs sm:text-sm text-muted-foreground mt-1">${p.tagline}</p>
             </div>
           </div>
-          <div class="flex items-center gap-3 pr-10">
+          <div class="flex items-center gap-3">
             <a href="${p.url}" target="_blank" rel="noopener noreferrer"
-               class="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/20">
+               class="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/20 w-full sm:w-auto justify-center">
               Visit Website ${ICONS.arrowUpRight}
             </a>
           </div>
-          <button onclick="window.closePreview()"
-                  class="absolute right-0 top-0 grid h-8 w-8 place-items-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-white cursor-pointer"
-                  aria-label="Close">
-            ${ICONS.close}
-          </button>
         </div>
 
         <div class="pt-6 space-y-8">
