@@ -444,10 +444,10 @@ window.launchPreview = function(platformId) {
 
   platformModal.innerHTML = `
     <div class="fixed inset-0 z-50 grid place-items-center p-4 sm:p-8 animate-fade-in" role="dialog" aria-modal="true">
-      <button aria-label="Close" onclick="window.closePreview()" class="absolute inset-0 bg-background/60 backdrop-blur-sm"></button>
+      <button aria-label="Close" onclick="window.closePreview()" class="absolute inset-0 bg-background/75"></button>
       
       <div class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-slate-950/95 border border-white/10 p-6 sm:p-10 animate-scale-in"
-           style="box-shadow: 0 30px 100px -20px oklch(0 0 0 / 0.8);">
+           style="box-shadow: 0 30px 100px -20px oklch(0 0 0 / 0.8); will-change: transform; transform: translate3d(0, 0, 0); -webkit-overflow-scrolling: touch;">
            
         <button onclick="window.closePreview()"
                 class="absolute right-4 top-4 sm:right-6 sm:top-6 grid h-8 w-8 place-items-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-white cursor-pointer z-20"
