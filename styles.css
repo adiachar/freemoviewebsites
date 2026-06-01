@@ -197,3 +197,10 @@ h1, h2, h3, h4 {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* 🎭 Cinematic Backdrop Dimming for modal portal overlay */
+body.modal-open #app-content-wrapper {
+  filter: blur(12px) brightness(0.2);
+  opacity: 0.15;
+  pointer-events: none;
+}

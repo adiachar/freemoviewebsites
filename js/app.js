@@ -320,52 +320,6 @@ function renderFeaturedSection() {
   grid.innerHTML = premium.map((p, i) => createCardHTML(p, i + 1)).join("");
 }
 
-function renderLeaderboard() {
-  const grid = document.getElementById("leaderboard-grid");
-  if (!grid) return;
-  const ranked = [...PLATFORMS].sort((a, b) => b.quality + b.ads + b.performance - (a.quality + a.ads + a.performance));
-  grid.innerHTML = ranked.slice(0, 12).map((p, i) => createCardHTML(p, i + 1)).join("");
-}
-
-function renderShelves() {
-  const wrapper = document.getElementById("shelves-wrapper");
-  if (!wrapper) return;
-
-  const trending = PLATFORMS.filter(p => p.trending).slice(0, 6);
-  const recent = [...PLATFORMS].sort((a, b) => b.added.localeCompare(a.added)).slice(0, 6);
-  const editors = PLATFORMS.filter(p => p.editorPick).slice(0, 6);
-  const favorites = PLATFORMS.filter(p => p.favorite).slice(0, 6);
-
-  const shelves = [
-    { id: "trending", eyebrow: "Trending", title: "This month's most-loved", icon: ICONS.trendingUp, items: trending },
-    { id: "recent", eyebrow: "Recently added", title: "Fresh on Streamatlas", icon: ICONS.clock, items: recent },
-    { id: "editors", eyebrow: "Editor's picks", title: "Curated by our team", icon: ICONS.award, items: editors },
-    { id: "favorites", eyebrow: "User favorites", title: "Community approved", icon: ICONS.heart, items: favorites }
-  ];
-
-  wrapper.innerHTML = shelves.map(s => {
-    if (s.items.length === 0) return "";
-    const cardsHTML = s.items.map(p => createCardHTML(p)).join("");
-    return `
-      <section id="${s.id}" class="relative py-14">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6">
-          <header class="flex items-end justify-between gap-4 reveal">
-            <div>
-              <p class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                ${s.icon} ${s.eyebrow}
-              </p>
-              <h3 class="mt-2 font-display text-2xl sm:text-3xl font-bold tracking-tight">${s.title}</h3>
-            </div>
-          </header>
-          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal">
-            ${cardsHTML}
-          </div>
-        </div>
-      </section>
-    `;
-  }).join("");
-}
-
 function renderFAQ() {
   const wrapper = document.getElementById("faq-accordions-wrapper");
   if (!wrapper) return;
@@ -432,10 +386,8 @@ window.toggleFAQ = function(index) {
 function renderComparisonTable() {
   const tbody = document.getElementById("comparison-table-body");
   if (!tbody) return;
-  const detailed = PLATFORMS.filter(p => p.features);
+  const detailed = PLATFORMS;
   tbody.innerHTML = detailed.map(p => {
-    const trustNum = parseInt(p.trustScore) || 50;
-    const trustClass = trustNum >= 80 ? "text-emerald-400" : trustNum >= 60 ? "text-amber-400" : "text-rose-400";
     let adBadge = "";
     if (p.ads >= 90) adBadge = `<span class="inline-flex items-center gap-1 text-emerald-400 font-medium">${ICONS.shieldCheck} \u{1F60A} Excellent</span>`;
     else if (p.ads >= 80) adBadge = `<span class="inline-flex items-center gap-1 text-amber-400 font-medium">${ICONS.zap} \u{1F610} Moderate</span>`;
@@ -444,9 +396,7 @@ function renderComparisonTable() {
       <tr class="hover:bg-foreground/5 transition-colors">
         <td class="p-4 sm:p-5"><div class="flex items-center gap-3">${renderLogoHTML(p.name, 32)}<span class="font-display font-semibold text-white">${p.name}</span></div></td>
         <td class="p-4 sm:p-5 text-foreground/80">${p.regRequired || "No"}</td>
-        <td class="p-4 sm:p-5 text-foreground/80 font-medium">${p.qualityText || "HD"}</td>
         <td class="p-4 sm:p-5">${adBadge}</td>
-        <td class="p-4 sm:p-5 font-mono font-bold ${trustClass}">${p.trustScore || "N/A"}</td>
         <td class="p-4 sm:p-5 text-right"><div class="inline-flex gap-2">
           <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="inline-flex h-8 items-center gap-1 rounded-lg bg-foreground/5 border border-border px-3 text-xs font-semibold hover:bg-foreground/10 transition-colors">Visit ${ICONS.arrowUpRight}</a>
           <button onclick="window.launchPreview('${p.id}')" class="inline-flex h-8 items-center gap-1 rounded-lg bg-purple-500/10 border border-purple-500/20 px-3 text-xs font-semibold text-purple-300 hover:bg-purple-500/20 transition-colors">${ICONS.eye} Review</button>
@@ -477,70 +427,70 @@ window.launchPreview = function(platformId) {
 
   platformModal.innerHTML = `
     <div class="fixed inset-0 z-50 grid place-items-center p-4 sm:p-8 animate-fade-in" role="dialog" aria-modal="true">
-      <button aria-label="Close" onclick="window.closePreview()" class="absolute inset-0 bg-background/70 backdrop-blur-2xl"></button>
+      <button aria-label="Close" onclick="window.closePreview()" class="absolute inset-0 bg-background/60 backdrop-blur-sm"></button>
       
-      <div class="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto rounded-3xl glass-strong border-gradient animate-scale-in"
-           style="box-shadow: var(--shadow-elegant);">
+      <div class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-slate-950/95 border border-white/10 p-6 sm:p-10 animate-scale-in"
+           style="box-shadow: 0 30px 100px -20px oklch(0 0 0 / 0.8);">
            
-        <div class="relative h-48 sm:h-64 overflow-hidden rounded-t-3xl"
-             style="background: radial-gradient(ellipse at 20% 30%, color-mix(in oklab, var(--aurora-1) 60%, transparent), transparent 60%), radial-gradient(ellipse at 80% 60%, color-mix(in oklab, var(--aurora-2) 55%, transparent), transparent 60%), linear-gradient(135deg, oklch(0.18 0.04 270), oklch(0.10 0.02 270));">
-          <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 20px 20px;"></div>
-          <button onclick="window.closePreview()"
-                  class="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full glass-strong hover:bg-foreground/10 transition-colors"
-                  aria-label="Close">
-            ${ICONS.close}
-          </button>
-          <div class="absolute -bottom-10 left-6 sm:left-8 flex items-end gap-4">
-            <div class="rounded-3xl border-4 border-slate-950 overflow-hidden bg-slate-950">
-              ${renderLogoHTML(p.name, 88)}
-            </div>
-          </div>
-        </div>
-
-        <div class="px-6 sm:px-8 pt-14 pb-8">
-          <div class="flex flex-wrap items-start justify-between gap-4">
+        <!-- Sleek Minimalist Header -->
+        <div class="flex items-start justify-between gap-6 pb-6 border-b border-white/10 relative">
+          <div class="flex items-center gap-4">
+            ${renderLogoHTML(p.name, 64)}
             <div>
               <div class="flex items-center gap-2">
-                <h2 class="font-display text-3xl sm:text-4xl font-bold">${p.name}</h2>
+                <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">${p.name}</h2>
                 ${p.premium ? `
-                  <span class="inline-flex items-center gap-1 rounded-full bg-foreground/5 px-2.5 py-1 text-xs font-semibold gold-text">
+                  <span class="inline-flex items-center gap-1 rounded-full bg-purple-500/10 border border-purple-500/20 px-2.5 py-0.5 text-xs font-semibold gold-text">
                     ${ICONS.star} Premium
                   </span>
                 ` : ""}
               </div>
-              <p class="mt-1 text-muted-foreground">${p.tagline}</p>
+              <p class="text-sm text-muted-foreground mt-0.5">${p.tagline}</p>
             </div>
+          </div>
+          <div class="flex items-center gap-3 pr-10">
             <a href="${p.url}" target="_blank" rel="noopener noreferrer"
-               class="inline-flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
-               style="background: var(--gradient-primary); box-shadow: var(--shadow-glow);">
-              Visit ${p.name} ${ICONS.arrowUpRight}
+               class="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/20">
+              Visit Website ${ICONS.arrowUpRight}
             </a>
           </div>
+          <button onclick="window.closePreview()"
+                  class="absolute right-0 top-0 grid h-8 w-8 place-items-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-white cursor-pointer"
+                  aria-label="Close">
+            ${ICONS.close}
+          </button>
+        </div>
 
-          <p class="mt-6 text-foreground/85 leading-relaxed">${p.description}</p>
+        <div class="pt-6 space-y-8">
+          <p class="text-base text-foreground/90 leading-relaxed text-pretty">${p.description}</p>
 
-          <div class="mt-8 grid grid-cols-3 gap-5">
+          <!-- Sleek Metrics Grid -->
+          <div class="grid grid-cols-3 gap-4">
             ${createMeterHTML("Quality", p.quality, "var(--aurora-1)")}
             ${createMeterHTML("Ad-free", p.ads, "var(--aurora-2)")}
             ${createMeterHTML("Speed", p.performance, "var(--aurora-3)")}
           </div>
 
-          <div class="mt-8 grid sm:grid-cols-3 gap-3">
-            ${[1, 2, 3].map(i => `
-              <div class="aspect-video rounded-2xl border border-border overflow-hidden relative"
-                   style="background: linear-gradient(135deg, oklch(0.18 0.03 270), oklch(0.12 0.02 270));">
-                <div class="absolute inset-0 opacity-60"
-                     style="background: radial-gradient(ellipse at ${20 + i * 25}% 40%, color-mix(in oklab, var(--aurora-${i}) 50%, transparent), transparent 60%);">
-                </div>
-                <div class="absolute inset-x-3 bottom-3 h-2 rounded-full bg-foreground/10"></div>
-                <div class="absolute inset-x-3 bottom-7 h-3 w-1/3 rounded-full bg-foreground/15"></div>
+          <!-- Pristine uncropped Screenshot Preview -->
+          ${(() => {
+            const screenshots = {
+              netprime: "/movie_website_images/Netprime.png",
+              lunastream: "/movie_website_images/LunaStream.png",
+              coreflix: "/movie_website_images/coreflix.png",
+              nightflix: "/movie_website_images/nightflix.png"
+            };
+            const screenshotUrl = screenshots[p.id];
+            return screenshotUrl ? `
+              <div class="overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-black/40">
+                <img src="${screenshotUrl}" alt="${p.name} Preview" class="w-full h-auto block rounded-2xl" loading="lazy">
               </div>
-            `).join("")}
-          </div>
+            ` : "";
+          })()}
 
-          <div class="mt-8 grid sm:grid-cols-2 gap-5">
-            <div class="rounded-2xl border border-border bg-foreground/5 p-5">
-              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-foreground/80">Advantages</h4>
+          <!-- Advantages & Considerations Grid -->
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-white">Advantages</h4>
               <ul class="mt-3 space-y-2">
                 ${pros.map(pro => `
                   <li class="flex items-start gap-2 text-sm text-muted-foreground">
@@ -549,8 +499,8 @@ window.launchPreview = function(platformId) {
                 `).join("")}
               </ul>
             </div>
-            <div class="rounded-2xl border border-border bg-foreground/5 p-5">
-              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-foreground/80">Considerations</h4>
+            <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-white">Considerations</h4>
               <ul class="mt-3 space-y-2">
                 ${cons.map(con => `
                   <li class="flex items-start gap-2 text-sm text-muted-foreground">
@@ -561,17 +511,18 @@ window.launchPreview = function(platformId) {
             </div>
           </div>
 
+          <!-- Similar Platforms -->
           ${similar.length > 0 ? `
-            <div class="mt-10">
-              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-foreground/80">Similar Platforms</h4>
-              <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="pt-4">
+              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">Similar Platforms</h4>
+              <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 ${similar.map(s => `
                   <a href="${s.url}" target="_blank" rel="noopener noreferrer"
-                     class="flex items-center gap-3 rounded-2xl border border-border bg-foreground/5 p-3 transition-colors hover:bg-foreground/10">
-                    ${renderLogoHTML(s.name, 40)}
+                     class="flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/5">
+                    ${renderLogoHTML(s.name, 36)}
                     <div class="min-w-0">
-                      <p class="truncate text-sm font-semibold">${s.name}</p>
-                      <p class="truncate text-xs text-muted-foreground">${s.tagline}</p>
+                      <p class="truncate text-xs font-semibold text-white">${s.name}</p>
+                      <p class="truncate text-[10px] text-muted-foreground">${s.tagline}</p>
                     </div>
                   </a>
                 `).join("")}
@@ -584,11 +535,13 @@ window.launchPreview = function(platformId) {
     </div>
   `;
   platformModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
   document.body.style.overflow = "hidden";
 };
 
 window.closePreview = function() {
   platformModal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
   document.body.style.overflow = "";
 };
 
@@ -631,15 +584,22 @@ document.addEventListener("keydown", (e) => {
 
 // Initialization
 document.addEventListener("DOMContentLoaded", () => {
-  renderParticles();
-  initStatsCounters();
+  // Stage 1: Render above-the-fold elements instantly (Hero and Featured sections)
   renderHeroFilters();
   renderFeaturedSection();
-  renderLeaderboard();
-  renderComparisonTable();
-  renderDiscoverFilters();
-  renderDiscoverGrid();
-  renderShelves();
-  renderFAQ();
-  initRevealObserver();
+  
+  // Stage 2: Render mid-fold interactive components in the next paint frame
+  requestAnimationFrame(() => {
+    renderDiscoverFilters();
+    renderDiscoverGrid();
+    
+    // Stage 3: Defer offscreen/heavy components to run when the main thread is free
+    setTimeout(() => {
+      renderComparisonTable();
+      renderFAQ();
+      renderParticles();
+      initStatsCounters();
+      initRevealObserver();
+    }, 24);
+  });
 });
