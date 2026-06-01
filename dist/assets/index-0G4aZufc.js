@@ -163,7 +163,7 @@
           </div>
 
           <!-- Pristine uncropped Screenshot Preview -->
-          ${(()=>{const o={netprime:"/movie_website_images/Netprime.png",lunastream:"/movie_website_images/LunaStream.png",coreflix:"/movie_website_images/coreflix.png",nightflix:"/movie_website_images/nightflix.png"}[t.id];return o?`
+          ${(()=>{const o={netprime:"/movie_website_images/Netprime.webp",lunastream:"/movie_website_images/LunaStream.webp",coreflix:"/movie_website_images/coreflix.webp",nightflix:"/movie_website_images/nightflix.webp"}[t.id];return o?`
               <div class="overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-black/40">
                 <img src="${o}" alt="${t.name} Preview" class="w-full h-auto block rounded-2xl" loading="lazy">
               </div>

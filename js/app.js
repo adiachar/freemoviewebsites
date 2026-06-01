@@ -474,10 +474,10 @@ window.launchPreview = function(platformId) {
           <!-- Pristine uncropped Screenshot Preview -->
           ${(() => {
             const screenshots = {
-              netprime: "/movie_website_images/Netprime.png",
-              lunastream: "/movie_website_images/LunaStream.png",
-              coreflix: "/movie_website_images/coreflix.png",
-              nightflix: "/movie_website_images/nightflix.png"
+              netprime: "/movie_website_images/Netprime.webp",
+              lunastream: "/movie_website_images/LunaStream.webp",
+              coreflix: "/movie_website_images/coreflix.webp",
+              nightflix: "/movie_website_images/nightflix.webp"
             };
             const screenshotUrl = screenshots[p.id];
             return screenshotUrl ? `
