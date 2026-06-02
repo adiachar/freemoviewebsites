@@ -386,7 +386,7 @@ window.toggleFAQ = function(index) {
 function renderComparisonTable() {
   const tbody = document.getElementById("comparison-table-body");
   if (!tbody) return;
-  const detailed = PLATFORMS;
+  const detailed = [...PLATFORMS].sort((a, b) => b.ads - a.ads);
   tbody.innerHTML = detailed.map(p => {
     let adBadge = "";
     if (p.ads >= 90) adBadge = `<span class="inline-flex items-center gap-1 text-emerald-400 font-medium">${ICONS.shieldCheck} \u{1F60A} Excellent</span>`;

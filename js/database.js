@@ -398,7 +398,7 @@ export const PLATFORMS = [
     tagline: "Quietly quality.",
     description: "Understated UI with a surprisingly deep library.",
     quality: 77,
-    ads: 78,
+    ads: 98,
     performance: 78,
     badges: ["Movies"],
     premium: false,
@@ -409,7 +409,7 @@ export const PLATFORMS = [
     trustScore: "77/100",
     regRequired: "No",
     qualityText: "HD / 720p",
-    adExp: "Low to moderate ad layout",
+    adExp: "Completely ad-free streaming",
     compatibility: "Mobile browser optimized (Android/iOS)",
     library: "Movies only, curated action and drama",
     keyTakeaway: "Minimal distractions, rapid query parsing, clean lists",
@@ -474,7 +474,7 @@ export const PLATFORMS = [
   },
   
   // Quick-meta additional directory rows (Items 18 to 38 in our structured discover database)
-  { id: "nightflix", name: "NightFlix", url: "https://nightflix.to", tagline: "Late-night cinema, anytime.", description: "Sleek dark interface with smart recommendations and surprisingly stable playback.", quality: 92, ads: 88, performance: 91, badges: ["Movies", "4K"], category: "movies", added: "2025-06", editorPick: true },
+  { id: "nightflix", name: "NightFlix", url: "https://nightflix.to", tagline: "Late-night cinema, anytime.", description: "Sleek dark interface with smart recommendations and surprisingly stable playback.", quality: 92, ads: 98, performance: 91, badges: ["Movies", "4K"], category: "movies", added: "2025-06", editorPick: true },
   { id: "dulo", name: "Dulo", url: "https://dulo.tv", tagline: "Effortless discovery.", description: "Clean grid, sharp typography and an excellent TV browsing experience.", quality: 90, ads: 86, performance: 90, badges: ["TV Shows", "Mobile Friendly"], category: "tv", added: "2025-05", trending: true },
   { id: "hydrahd", name: "HydraHD", url: "https://hydrahd.info", tagline: "Many heads, one library.", description: "Vast multi-source catalogue with strong TV coverage.", quality: 86, ads: 80, performance: 86, badges: ["TV Shows", "4K"], category: "mixed", added: "2024-12" },
   { id: "rive", name: "Rive", url: "https://rentry.co/rivestream", tagline: "A current of content.", description: "Aggregator-style discovery with quick redirects to working sources.", quality: 83, ads: 78, performance: 85, badges: ["Trending", "Fast Servers"], category: "mixed", added: "2024-11" },
